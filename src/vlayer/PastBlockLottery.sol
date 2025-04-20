@@ -5,7 +5,7 @@ import {Proof} from "vlayer-0.1.0/Proof.sol";
 import {Prover} from "vlayer-0.1.0/Prover.sol";
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 
-contract BlockProver is Prover, Ownable {
+contract PastBlockProver is Prover, Ownable {
     /*//////////////////////////////////////////////////////////////
                             STATE VARIABLES
     //////////////////////////////////////////////////////////////*/
@@ -37,7 +37,7 @@ contract BlockProver is Prover, Ownable {
         emit LotteryEntered(msg.sender);
     }
 
-    function pickWinner() external returns (Proof memory, address) {
+    function pickWinner() external onlyOwner returns (Proof memory, address) {
         // We first generate a random block number between current block and current block - i_blockInterval
         uint256 blockNumber = block.number -
             (block.number % i_blockInterval) +
