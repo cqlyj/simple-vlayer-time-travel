@@ -13,13 +13,6 @@ contract BlockProver is Prover, Ownable {
     address[] public s_players;
     address public s_winner;
     uint256 public immutable i_blockInterval;
-    uint256 public constant ENTRY_FEE = 0.000001 ether;
-
-    /*//////////////////////////////////////////////////////////////
-                                 ERRORS
-    //////////////////////////////////////////////////////////////*/
-
-    error BlockProver__NotCorrectEntryFee();
 
     /*//////////////////////////////////////////////////////////////
                                  EVENTS
@@ -39,11 +32,7 @@ contract BlockProver is Prover, Ownable {
                      EXTERNAL AND PUBLIC FUNCTIONS
     //////////////////////////////////////////////////////////////*/
 
-    function enterLottery() external payable {
-        if (msg.value != ENTRY_FEE) {
-            revert BlockProver__NotCorrectEntryFee();
-        }
-
+    function enterLottery() external {
         s_players.push(msg.sender);
         emit LotteryEntered(msg.sender);
     }
