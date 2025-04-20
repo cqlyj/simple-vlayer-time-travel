@@ -5,7 +5,7 @@ import {Proof} from "vlayer-0.1.0/Proof.sol";
 import {Prover} from "vlayer-0.1.0/Prover.sol";
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 
-contract PastBlockProver is Prover, Ownable {
+contract PastBlockLottery is Prover, Ownable {
     /*//////////////////////////////////////////////////////////////
                             STATE VARIABLES
     //////////////////////////////////////////////////////////////*/
