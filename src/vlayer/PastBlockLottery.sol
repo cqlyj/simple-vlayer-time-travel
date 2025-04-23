@@ -3,9 +3,8 @@ pragma solidity 0.8.28;
 
 import {Proof} from "vlayer-0.1.0/Proof.sol";
 import {Prover} from "vlayer-0.1.0/Prover.sol";
-import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 
-contract PastBlockLottery is Prover, Ownable {
+contract PastBlockLottery is Prover {
     /*//////////////////////////////////////////////////////////////
                             STATE VARIABLES
     //////////////////////////////////////////////////////////////*/
@@ -24,8 +23,8 @@ contract PastBlockLottery is Prover, Ownable {
                               CONSTRUCTOR
     //////////////////////////////////////////////////////////////*/
 
-    constructor() Ownable(msg.sender) {
-        i_blockInterval = 1000;
+    constructor() {
+        i_blockInterval = 10;
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -37,22 +36,25 @@ contract PastBlockLottery is Prover, Ownable {
         emit LotteryEntered(msg.sender);
     }
 
-    function pickWinner() external onlyOwner returns (Proof memory, address) {
+    function pickWinner() external returns (Proof memory, address) {
         // We first generate a random block number between current block and current block - i_blockInterval
-        uint256 blockNumber = block.number -
-            (block.number % i_blockInterval) +
-            (uint256(
-                keccak256(abi.encodePacked(block.timestamp, block.prevrandao))
-            ) % i_blockInterval);
+
+        // uint256 blockNumber = block.number +
+        //     (uint256(
+        //         keccak256(abi.encodePacked(block.timestamp, block.prevrandao))
+        //     ) % i_blockInterval) -
+        //     i_blockInterval;
+
+        uint256 blockNumber = 1000;
 
         // Then set this random block number as the block number to be used for the proof
+
         setBlock(blockNumber);
-        for (uint256 i = 0; i < s_players.length; i++) {
-            // The winner is the player at the block number which holds the maximum balance
-            if (s_players[i].balance > s_winner.balance) {
-                s_winner = s_players[i];
-            }
-        }
+
+        // For simplicity, we just use the first player as the winner
+        // You can design your own logic to pick a winner
+
+        s_winner = s_players[0];
 
         s_players = new address[](0); // Reset the players array for the next lottery
 
